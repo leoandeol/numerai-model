@@ -16,6 +16,8 @@ y = data_train.target
 X_pred = data_pred[features]
 pipe = make_pipeline(PolynomialFeatures(1,interaction_only=True),XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.02, subsample=0.9, colsample_bytree=0.85, objective='reg:linear',verbose=5))
 
+pipe = make_pipeline(PolynomialFeatures(2),XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.02, subsample=0.9, colsample_bytree=0.85, objective='reg:linear'))
+
 print("Training")
 model = pipe
 model.fit(X, y)
