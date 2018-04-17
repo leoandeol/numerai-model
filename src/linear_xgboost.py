@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from xgboost import XGBRegressor
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import StandardScaler
 
 #todo era
 
@@ -14,7 +14,7 @@ X = data_train[features]
 y = data_train.target
 #X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.25)
 X_pred = data_pred[features]
-pipe = XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.02, subsample=0.9, colsample_bytree=0.85, objective='reg:linear',verbose=5)
+pipe = make_pipeline(StandardScaler(),XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.02, subsample=0.9, colsample_bytree=0.85, objective='reg:linear',verbose=5))
 
 #pipe = make_pipeline(PolynomialFeatures(2),XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.02, subsample=0.9, colsample_bytree=0.85, objective='reg:linear'))
 
@@ -28,6 +28,6 @@ results = model.predict(X_pred)
 results_df = pd.DataFrame(data={'probability':results})
 joined = pd.DataFrame(data_pred.id).join(results_df)
 
-print("Writing predictions to predictions.csv")
+print("Writing predictions")
 # Save the predictions out to a CSV file
-joined.to_csv('predictions_linear_xgboost.csv', index=False)
+joined.to_csv('../predictions/predictions_linear_xgboost.csv', index=False)
